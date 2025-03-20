@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muestra datos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body onload="descargaDatos()" class="container">
+
+    <h1 class="my-4">Muestra datos</h1>
+
+    <form id="formulario">
+        <div class="form-group">
+            <label>Nombre</label>
+            <input id="nombre" type="text" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Desarrollador</label>
+            <input id="desarrollador" type="text" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>¿Plataforma?</label>
+            <select id="plataforma" class="form-control">
+                <option value="">Sin selección</option>
+                <option value="Nintendo Switch">Nintendo Switch</option>
+                <option value="Wii">Wii</option>
+                <option value="Xbox">Xbox</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>¿Año de lanzamiento?</label>
+            <select id="anio" class="form-control">
+                <option value="2017">2017</option>
+                <option value="2005">2005</option>
+                <option value="1999">1999</option>
+                <option value="1980">1980</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>¿Cuál es tu serie favorita?</label>
+            <input id="serie" type="text" class="form-control">
+        </div>
+
+        <button type="button" class="btn btn-success mt-3" onclick="enviarDatos()">Enviar Datos</button>
+    </form>
+
+    <script type="module">
+        import { exportaAHtml } from "./lib/js/exportaAHtml.js";
+        import { consumeJson } from "./lib/js/consumeJson.js";
+        import { muestraObjeto } from "./lib/js/muestraObjeto.js";
+        import { muestraError } from "./lib/js/muestraError.js";
+
+        async function descargaDatos() {
+            try {
+                const respuesta = await consumeJson("srv/datos.php");
+                muestraObjeto(document, respuesta.body);
+            } catch (error) {
+                muestraError(error);
+            }
+        }
+        exportaAHtml(descargaDatos);
+    </script>
+
+    <script>
+        function enviarDatos() {
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                desarrollador: document.getElementById('desarrollador').value,
+                plataforma: document.getElementById('plataforma').value,
+                año_lanzamiento: document.getElementById('anio').value,
+                serie_favorita: document.getElementById('serie').value
+            };
+
+            fetch('srv/datos.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Datos enviados correctamente');
+                console.log(data);
+            })
+            .catch(error => console.error('Error al enviar los datos:', error));
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <a href="index.html" class="btn btn-primary mt-3">Regresar</a>
+
+</body>
+
+</html>

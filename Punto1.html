@@ -1,0 +1,62 @@
+<html lang="es"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejemplo de servicio</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          background-color: #f4f4f4;
+          padding: 50px;
+      }
+      h1 {
+          color: #333;
+      }
+      button {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+          border-radius: 5px;
+          transition: background-color 0.3s;
+      }
+      button:hover {
+          background-color: #0056b3;
+      }
+  </style>
+<style id="monica-reading-highlight-style">
+      .monica-reading-highlight {
+        animation: fadeInOut 1.5s ease-in-out;
+      }
+
+      @keyframes fadeInOut {
+        0%, 100% { background-color: transparent; }
+        30%, 70% { background-color: rgba(2, 118, 255, 0.20); }
+      }
+    </style></head>
+
+<body monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="7.9.1">
+  <h1>Quieres conocer un refran da  click</h1>
+  <button onclick="ejecuta()">click</button>
+  <script>
+      async function ejecuta() {
+          try {
+              const resp = await fetch("servicio.php");
+              if (resp.ok) {
+                  const texto = await resp.text();
+                  alert(texto);
+              } else {
+                  throw new Error(resp.statusText);
+              }
+          } catch (error) {
+              console.error(error);
+              alert(error.message);
+          }
+      }
+  </script>
+
+
+
+<div id="monica-content-root" class="monica-widget" style="pointer-events: auto;"></div></body></html>
