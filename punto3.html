@@ -10,41 +10,29 @@
 
     <h1 class="mt-4">Servicio que devuelve JSON</h1>
 
-    <p><button class="btn btn-primary mt-3" id="resultadoBtn">Resultado</button></p>
+    <p><button class="btn btn-primary mt-3" id="resultadoBtn">Mostrar Mensaje</button></p>
 
     <script type="module">
         import { consumeJson } from "./lib/js/consumeJson.js";
         import { muestraError } from "./lib/js/muestraError.js";
-        import { muestraObjeto } from "./lib/js/muestraObjeto.js";
 
-        // Función que descarga los datos desde el servidor al cargar la página
-        async function descargaDatos() {
+        // Función que muestra el alert con el formato específico
+        async function mostrarMensaje() {
             try {
-                const respuesta = await consumeJson("srv/punto3.php"); // Aquí deberías poner la ruta correcta del archivo PHP que sirve el JSON
-                muestraObjeto(document, respuesta.body); // Muestra los datos en la página
-            } catch (error) {
-                muestraError(error);
-            }
-        }
-
-        // Función que muestra un alert con los datos del JSON
-        async function resultado() {
-            try {
-                const respuesta = await consumeJson("srv/punto3.php"); // Verifica que esta ruta sea correcta
+                const respuesta = await consumeJson("srv/punto3.php");
                 const body = respuesta.body;
-
-                alert(`Nombre: ${body.nombre}
-Género: ${body.genero}
-Álbum más vendido: ${body.album_mas_vendido}`);
+                
+                // Formatear el mensaje como en el ejemplo
+                const mensajeFormateado = `${body.origen} dice\n\n${body.mensaje}\n\n[${body.boton}]`;
+                alert(mensajeFormateado);
             } catch (error) {
                 muestraError(error);
             }
         }
 
-        // Asignar eventos después de que el DOM esté completamente cargado
+        // Asignar evento al botón
         document.addEventListener("DOMContentLoaded", () => {
-            descargaDatos();
-            document.getElementById("resultadoBtn").addEventListener("click", resultado);
+            document.getElementById("resultadoBtn").addEventListener("click", mostrarMensaje);
         });
     </script>
 
