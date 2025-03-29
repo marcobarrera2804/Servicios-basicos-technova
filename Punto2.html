@@ -43,11 +43,6 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label>¿Cuál es tu serie favorita?</label>
-            <input id="serie" type="text" class="form-control">
-        </div>
-
         <button type="button" class="btn btn-success mt-3" onclick="enviarDatos()">Enviar Datos</button>
     </form>
 
@@ -59,8 +54,20 @@
 
         async function descargaDatos() {
             try {
-                const respuesta = await consumeJson("srv/datos.php");
-                muestraObjeto(document, respuesta.body);
+                // Objeto diferente con las 4 propiedades requeridas
+                const juegoDiferente = {
+                    nombre: "Super Mario Odyssey",
+                    desarrollador: "Nintendo EPD",
+                    plataforma: "Nintendo Switch",
+                    año_lanzamiento: "2017"
+                };
+                
+                // Mostramos el objeto en el formulario
+                document.getElementById('nombre').value = juegoDiferente.nombre;
+                document.getElementById('desarrollador').value = juegoDiferente.desarrollador;
+                document.getElementById('plataforma').value = juegoDiferente.plataforma;
+                document.getElementById('anio').value = juegoDiferente.año_lanzamiento;
+                
             } catch (error) {
                 muestraError(error);
             }
@@ -74,11 +81,10 @@
                 nombre: document.getElementById('nombre').value,
                 desarrollador: document.getElementById('desarrollador').value,
                 plataforma: document.getElementById('plataforma').value,
-                año_lanzamiento: document.getElementById('anio').value,
-                serie_favorita: document.getElementById('serie').value
+                año_lanzamiento: document.getElementById('anio').value
             };
 
-            fetch('srv/datos.php', {
+            fetch('srv/punto2.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -87,7 +93,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert('Datos enviados correctamente');
+                // Mostrar alerta con las 4 propiedades del objeto recibido
+                alert(`Datos recibidos:\nNombre: ${data.nombre}\nDesarrollador: ${data.desarrollador}\nPlataforma: ${data.plataforma}\nAño de lanzamiento: ${data.año_lanzamiento}`);
                 console.log(data);
             })
             .catch(error => console.error('Error al enviar los datos:', error));
